@@ -1,6 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import dynamic from "next/dynamic";
+
+const ArCakeExperience = dynamic(
+  () =>
+    import("./ArCakeExperience").then((module) => module.ArCakeExperience),
+  { ssr: false },
+);
 
 const birthday = {
   recipient: "寿星同学",
@@ -264,79 +271,13 @@ export default function Home() {
       )}
 
       {stage === "cake" && (
-        <section className="scene cake-scene" aria-labelledby="cake-title">
-          <div className="eyebrow">任务 02 · 许个愿</div>
-          <h2 id="cake-title">
-            {candlesOut ? "愿望已接收" : "现在，把蜡烛吹灭"}
-          </h2>
-          <p className="scene-copy">
-            {candlesOut
-              ? "宇宙没有透露内容，但看起来是个不错的愿望。"
-              : "允许麦克风后对着屏幕吹气，或者直接轻触蛋糕。"}
-          </p>
-
-          <div className={`cake-wrap ${candlesOut ? "candles-out" : ""}`}>
-            <div className="cake-glow" />
-            <div className="candles" aria-hidden="true">
-              {[0, 1, 2].map((index) => (
-                <span className="candle" key={index}>
-                  <i className="flame" />
-                </span>
-              ))}
-            </div>
-            <button
-              type="button"
-              className="cake"
-              onClick={extinguishCandles}
-              disabled={candlesOut}
-              aria-label="轻触蛋糕吹灭蜡烛"
-            >
-              <span className="frosting" />
-              <span className="cake-layer top-layer" />
-              <span className="cream-line" />
-              <span className="cake-layer bottom-layer" />
-              <span className="cake-plate" />
-            </button>
-            {candlesOut && (
-              <div className="confetti" aria-hidden="true">
-                {Array.from({ length: 32 }, (_, index) => (
-                  <i
-                    key={index}
-                    style={
-                      {
-                        "--x": `${(index % 8) * 13 - 45}%`,
-                        "--delay": `${(index % 5) * 0.06}s`,
-                        "--color": ["#ff7b54", "#ffd166", "#72d6c9", "#f5eee2"][index % 4],
-                      } as CSSProperties
-                    }
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-
-          {!candlesOut && (
-            <div className="cake-actions">
-              <button
-                className="secondary-button"
-                type="button"
-                onClick={startMicrophone}
-                disabled={micStatus === "listening"}
-              >
-                {micStatus === "listening" ? "正在听你吹气…" : "开启麦克风吹气"}
-              </button>
-              {micStatus === "denied" && (
-                <p className="permission-note">麦克风不可用，轻触蛋糕同样可以完成。</p>
-              )}
-            </div>
-          )}
-
-          {candlesOut && (
-            <button className="primary-button" type="button" onClick={() => goTo("letter")}>
-              查看最后一份礼物 <span>→</span>
-            </button>
-          )}
-        </section>
+        <ArCakeExperience
+          candlesOut={candlesOut}
+          micStatus={micStatus}
+          onStartMicrophone={startMicrophone}
+          onExtinguish={extinguishCandles}
+          onContinue={() => goTo("letter")}
+        />
       )}
 
       {stage === "letter" && (

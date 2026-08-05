@@ -17,10 +17,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: baseUrl,
     title: "生日支线任务｜给最特别的朋友",
-    description: "一场只为寿星开放的互动生日小冒险。",
+    description: "把蛋糕放进现实，再亲手点亮并吹灭蜡烛的 AR 生日小冒险。",
     openGraph: {
       title: "生日支线任务",
-      description: "仅限今日 · 单人副本",
+      description: "把蛋糕送进现实 · 仅限今日",
       type: "website",
       locale: "zh_CN",
       images: [{ url: previewImage, width: 1200, height: 630 }],
@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title: "生日支线任务",
-      description: "仅限今日 · 单人副本",
+      description: "把蛋糕送进现实 · 仅限今日",
       images: [previewImage],
     },
   };
