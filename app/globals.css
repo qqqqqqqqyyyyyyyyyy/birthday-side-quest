@@ -190,8 +190,6 @@ footer {
   animation: scene-in 750ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.welcome-scene,
-.cake-scene,
 .ar-close {
   position: fixed;
   top: max(20px, env(safe-area-inset-top));
