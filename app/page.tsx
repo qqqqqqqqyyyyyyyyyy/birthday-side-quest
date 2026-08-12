@@ -32,6 +32,12 @@ const birthday = {
       note: "写下一件你一直记得、却可能从没说过的小事。",
       color: "gold",
     },
+    {
+      label: "记忆碎片 04",
+      title: "下一站，继续同行",
+      note: "留给你们下一次出发，以及未来还会发生的好故事。",
+      color: "mint",
+    },
   ],
   letter: [
     "又顺利完成了一次绕太阳旅行，恭喜。",
@@ -47,6 +53,9 @@ const stageOrder: Stage[] = ["welcome", "memories", "cake", "letter"];
 export default function Home() {
   const [stage, setStage] = useState<Stage>("welcome");
   const [revealed, setRevealed] = useState<number[]>([]);
+  const [photoPages, setPhotoPages] = useState<number[]>(
+    birthday.memories.map(() => 0),
+  );
   const [soundOn, setSoundOn] = useState(true);
   const [candlesOut, setCandlesOut] = useState(false);
   const [micStatus, setMicStatus] = useState<
@@ -55,6 +64,7 @@ export default function Home() {
   const audioContextRef = useRef<AudioContext | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const animationRef = useRef<number | null>(null);
+  const swipeStartRef = useRef<{ cardIndex: number; x: number } | null>(null);
 
   const progress = stageOrder.indexOf(stage) + 1;
   const publicAssetPath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
@@ -103,6 +113,26 @@ export default function Home() {
     if (revealed.includes(index)) return;
     playChime([440 + index * 70]);
     setRevealed((current) => [...current, index]);
+  }
+
+  function showPhoto(cardIndex: number, photoIndex: number) {
+    setPhotoPages((current) =>
+      current.map((page, index) => (index === cardIndex ? photoIndex : page)),
+    );
+  }
+
+  function startPhotoSwipe(cardIndex: number, clientX: number) {
+    swipeStartRef.current = { cardIndex, x: clientX };
+  }
+
+  function finishPhotoSwipe(cardIndex: number, clientX: number) {
+    const swipeStart = swipeStartRef.current;
+    swipeStartRef.current = null;
+    if (!swipeStart || swipeStart.cardIndex !== cardIndex) return;
+
+    const distance = clientX - swipeStart.x;
+    if (distance < -36) showPhoto(cardIndex, 1);
+    if (distance > 36) showPhoto(cardIndex, 0);
   }
 
   function stopMicrophone() {
@@ -241,34 +271,81 @@ export default function Home() {
           <div className="section-heading">
             <div>
               <div className="eyebrow">任务 01 · 找回记忆</div>
-              <h2 id="memories-title">收集三根生日蜡烛</h2>
+              <h2 id="memories-title">收集四根生日蜡烛</h2>
             </div>
-            <div className="counter">{revealed.length} / 3</div>
+            <div className="counter">{revealed.length} / 4</div>
           </div>
           <p className="scene-copy left-copy">
-            点开三张拍立得。正式版本会在这里放入只属于你们的照片和故事。
+            点亮四段记忆 · 照片区域左滑可看下一张
           </p>
 
           <div className="memory-grid">
             {birthday.memories.map((memory, index) => {
               const isRevealed = revealed.includes(index);
               return (
-                <button
-                  type="button"
+                <article
                   key={memory.label}
                   className={`memory-card ${memory.color} ${isRevealed ? "revealed" : ""}`}
-                  onClick={() => revealMemory(index)}
                   style={{ "--tilt": `${index % 2 === 0 ? -2.5 : 2.5}deg` } as CSSProperties}
-                  aria-pressed={isRevealed}
                 >
-                  <span className="photo-placeholder">
-                    <span>{isRevealed ? "照片待放入" : `0${index + 1}`}</span>
-                  </span>
-                  <span className="memory-label">{memory.label}</span>
-                  <strong>{memory.title}</strong>
-                  <small>{isRevealed ? memory.note : "点击翻开"}</small>
+                  <div
+                    className="memory-photo-window"
+                    onPointerDown={(event) => {
+                      event.currentTarget.setPointerCapture(event.pointerId);
+                      startPhotoSwipe(index, event.clientX);
+                    }}
+                    onPointerUp={(event) => finishPhotoSwipe(index, event.clientX)}
+                    onPointerCancel={() => {
+                      swipeStartRef.current = null;
+                    }}
+                  >
+                    <div
+                      className="memory-photo-track"
+                      style={{ transform: `translateX(-${photoPages[index] * 50}%)` }}
+                    >
+                      {[0, 1].map((photoIndex) => (
+                        <div
+                          className="photo-placeholder"
+                          key={photoIndex}
+                          aria-label={`${memory.label}，照片 ${photoIndex + 1}`}
+                        >
+                          <span>照片 {photoIndex + 1} 待放入</span>
+                        </div>
+                      ))}
+                    </div>
+                    <span className="swipe-hint" aria-hidden="true">
+                      {photoPages[index] === 0 ? "左滑看下一张 ←" : "→ 右滑看上一张"}
+                    </span>
+                  </div>
+
+                  <div className="photo-pagination" aria-label={`${memory.label}照片页码`}>
+                    {[0, 1].map((photoIndex) => (
+                      <button
+                        type="button"
+                        key={photoIndex}
+                        className={photoPages[index] === photoIndex ? "active" : ""}
+                        onClick={() => showPhoto(index, photoIndex)}
+                        aria-label={`查看照片 ${photoIndex + 1}`}
+                        aria-current={photoPages[index] === photoIndex ? "true" : undefined}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="memory-card-copy">
+                    <span className="memory-label">{memory.label}</span>
+                    <strong>{memory.title}</strong>
+                    <small>{isRevealed ? memory.note : "点亮后解锁这段故事"}</small>
+                    <button
+                      type="button"
+                      className="memory-reveal-button"
+                      onClick={() => revealMemory(index)}
+                      disabled={isRevealed}
+                    >
+                      {isRevealed ? "记忆已点亮" : "点亮这段记忆"}
+                    </button>
+                  </div>
                   {isRevealed && <i className="collected-candle" aria-hidden="true" />}
-                </button>
+                </article>
               );
             })}
           </div>
@@ -313,6 +390,7 @@ export default function Home() {
               type="button"
               onClick={() => {
                 setRevealed([]);
+                setPhotoPages(birthday.memories.map(() => 0));
                 setCandlesOut(false);
                 goTo("welcome");
               }}

@@ -542,19 +542,17 @@ h2 {
 
 .memory-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 34px;
 }
 
 .memory-card {
   position: relative;
-  min-height: 390px;
-  padding: 14px 14px 24px;
-  border: 0;
+  min-width: 0;
+  padding: 14px 14px 22px;
   background: #f7f0e5;
   color: var(--ink);
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.22);
-  cursor: pointer;
   text-align: left;
   transform: rotate(var(--tilt));
   transition: transform 300ms ease, box-shadow 300ms ease;
@@ -569,31 +567,90 @@ h2 {
   transform: rotate(0) translateY(-3px);
 }
 
+.memory-photo-window {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.memory-photo-track {
+  display: flex;
+  width: 200%;
+  height: 100%;
+  transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 .photo-placeholder {
   display: grid;
-  height: 220px;
-  margin-bottom: 20px;
+  width: 50%;
+  flex: 0 0 50%;
   place-items: center;
-  overflow: hidden;
   background:
     linear-gradient(145deg, rgba(9, 34, 41, 0.08), transparent),
     repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.11) 0 9px, transparent 9px 18px),
     #b6c7c2;
   color: rgba(23, 51, 58, 0.48);
-  font-size: 30px;
+  font-size: clamp(18px, 3vw, 26px);
   transition: background 400ms ease;
 }
 
-.memory-card.coral.revealed .photo-placeholder {
+.memory-card.coral .photo-placeholder:nth-child(2) {
   background-color: #e99a7c;
 }
 
-.memory-card.blue.revealed .photo-placeholder {
+.memory-card.blue .photo-placeholder:nth-child(2) {
   background-color: #8eb4c0;
 }
 
-.memory-card.gold.revealed .photo-placeholder {
+.memory-card.gold .photo-placeholder:nth-child(2) {
   background-color: #e0bd66;
+}
+
+.memory-card.mint .photo-placeholder:nth-child(2) {
+  background-color: #83c8bd;
+}
+
+.swipe-hint {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(7, 25, 30, 0.62);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+}
+
+.photo-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  margin: 11px 0 15px;
+}
+
+.photo-pagination button {
+  width: 17px;
+  height: 5px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(23, 51, 58, 0.2);
+  cursor: pointer;
+  transition: width 200ms ease, background 200ms ease;
+}
+
+.photo-pagination button.active {
+  width: 30px;
+  background: var(--coral);
+}
+
+.memory-card-copy {
+  padding: 0 6px;
 }
 
 .memory-label {
@@ -614,9 +671,27 @@ h2 {
 
 .memory-card small {
   display: block;
+  min-height: 43px;
   color: rgba(23, 51, 58, 0.65);
   font-size: 13px;
   line-height: 1.65;
+}
+
+.memory-reveal-button {
+  margin-top: 18px;
+  padding: 9px 14px;
+  border: 1px solid rgba(23, 51, 58, 0.18);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.memory-reveal-button:disabled {
+  border-color: transparent;
+  background: rgba(114, 214, 201, 0.22);
+  cursor: default;
 }
 
 .collected-candle {
@@ -1075,16 +1150,48 @@ footer {
 
   .memory-grid {
     grid-template-columns: 1fr;
-    gap: 22px;
+    gap: 28px;
   }
 
   .memory-card {
-    min-height: 0;
+    padding: 12px 12px 20px;
     transform: none;
   }
 
+  .memories-scene {
+    padding-top: 42px;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .section-heading h2 {
+    max-width: 280px;
+    font-size: clamp(38px, 11vw, 48px);
+    line-height: 1.08;
+  }
+
+  .counter {
+    flex: none;
+    padding-top: 28px;
+    font-size: 25px;
+    white-space: nowrap;
+  }
+
+  .left-copy {
+    margin-top: 16px;
+    margin-bottom: 28px;
+    font-size: 13px;
+  }
+
+  .memory-photo-window {
+    aspect-ratio: 4 / 3;
+  }
+
   .photo-placeholder {
-    height: 190px;
+    font-size: 21px;
   }
 
   .letter-paper {
