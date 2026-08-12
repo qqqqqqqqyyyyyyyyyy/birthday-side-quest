@@ -161,6 +161,7 @@ export function ArCakeExperience({
   const runtimeRef = useRef<Runtime | null>(null);
   const surfaceFoundRef = useRef(false);
   const phase: ArPhase = candlesOut ? "out" : localPhase;
+  const publicAssetPath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
   useEffect(() => {
     let active = true;
@@ -446,7 +447,13 @@ export function ArCakeExperience({
           <div className="ar-preview-card" aria-hidden="true">
             <div className="ar-preview-phone">
               <span className="preview-surface" />
-              <span className="preview-cake">🎂</span>
+              {/* Static asset is already optimized for the GitHub Pages preview. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="preview-cake"
+                src={`${publicAssetPath}/ar-preview-chocolate-cake.jpg`}
+                alt=""
+              />
               <span className="preview-ring" />
             </div>
             <div className="preview-ray" />

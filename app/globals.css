@@ -838,7 +838,7 @@ h2 {
   position: absolute;
   top: 6px;
   left: 50%;
-  z-index: 3;
+  z-index: 4;
   width: 42px;
   height: 7px;
   border-radius: 10px;
@@ -857,22 +857,24 @@ h2 {
 .preview-cake {
   position: absolute;
   z-index: 2;
-  top: 78px;
-  left: 50%;
-  font-size: 55px;
-  filter: drop-shadow(0 12px 9px rgba(0, 0, 0, 0.35));
-  transform: translateX(-50%);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 48%;
 }
 
 .preview-ring {
   position: absolute;
-  z-index: 1;
+  z-index: 3;
   top: 137px;
   left: 50%;
   width: 76px;
   height: 23px;
   border: 2px solid var(--gold);
   border-radius: 50%;
+  background: rgba(255, 209, 102, 0.05);
+  box-shadow: 0 0 16px rgba(255, 209, 102, 0.38);
   transform: translateX(-50%);
 }
 
