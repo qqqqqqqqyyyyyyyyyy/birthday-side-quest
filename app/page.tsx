@@ -57,6 +57,7 @@ export default function Home() {
   const animationRef = useRef<number | null>(null);
 
   const progress = stageOrder.indexOf(stage) + 1;
+  const publicAssetPath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
   useEffect(() => {
     return () => stopMicrophone();
@@ -168,7 +169,15 @@ export default function Home() {
   }
 
   return (
-    <main className={`site-shell stage-${stage}`}>
+    <main
+      className={`site-shell stage-${stage}`}
+      style={
+        {
+          "--starry-sky-image": `url("${publicAssetPath}/starry-sky.jpg")`,
+          "--gift-image": `url("${publicAssetPath}/birthday-gift.jpg")`,
+        } as CSSProperties
+      }
+    >
       <div className="ambient" aria-hidden="true">
         <span className="orbit orbit-one" />
         <span className="orbit orbit-two" />
@@ -220,10 +229,7 @@ export default function Home() {
               onClick={() => goTo("memories")}
               aria-label="拆开生日礼物"
             >
-              <span className="gift-lid" />
-              <span className="gift-box" />
-              <span className="gift-ribbon" />
-              <span className="gift-tag">拆开它</span>
+              <span className="gift-action-badge">轻触拆开</span>
             </button>
             <p className="microcopy">轻触礼物开始 · 全程约 2 分钟</p>
           </div>

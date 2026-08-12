@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --night: #102d35;
-  --night-deep: #092229;
+  --night: #061438;
+  --night-deep: #020817;
   --cream: #f5eee2;
   --ink: #17333a;
   --coral: #ff7b54;
@@ -40,20 +40,29 @@ button:focus-visible {
   position: relative;
   min-height: 100svh;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 18% 25%, rgba(114, 214, 201, 0.09), transparent 30%),
-    radial-gradient(circle at 84% 75%, rgba(255, 123, 84, 0.1), transparent 34%),
-    linear-gradient(145deg, var(--night), var(--night-deep));
+  background: var(--night-deep);
   isolation: isolate;
 }
 
 .site-shell::before {
   position: fixed;
   inset: 0;
+  z-index: -2;
+  background-color: var(--night-deep);
+  background-image: var(--starry-sky-image);
+  background-position: center;
+  background-size: cover;
+  content: "";
+  pointer-events: none;
+}
+
+.site-shell::after {
+  position: fixed;
+  inset: 0;
   z-index: -1;
-  background-image: radial-gradient(rgba(245, 238, 226, 0.18) 0.7px, transparent 0.7px);
-  background-size: 18px 18px;
-  mask-image: linear-gradient(to bottom, black, transparent 88%);
+  background:
+    radial-gradient(circle at 20% 28%, rgba(38, 93, 190, 0.08), transparent 38%),
+    linear-gradient(180deg, rgba(2, 8, 23, 0.38), rgba(2, 8, 23, 0.7));
   content: "";
   pointer-events: none;
 }
@@ -63,6 +72,7 @@ button:focus-visible {
   inset: 0;
   z-index: -1;
   overflow: hidden;
+  opacity: 0.34;
   pointer-events: none;
 }
 
@@ -458,97 +468,47 @@ h2 {
 
 .gift-button {
   position: relative;
-  width: 230px;
-  height: 210px;
+  width: 280px;
+  aspect-ratio: 1402 / 1122;
   margin: 22px 0 12px;
-  border: 0;
-  background: transparent;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 28px;
+  background-image: var(--gift-image);
+  background-position: center;
+  background-size: cover;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), 0 0 0 7px rgba(255, 255, 255, 0.035);
   cursor: pointer;
+  transition: box-shadow 300ms ease, transform 300ms ease;
 }
 
-.gift-button:hover .gift-lid {
-  transform: translateY(-8px) rotate(-3deg);
-}
-
-.gift-box,
-.gift-lid,
-.gift-ribbon {
-  position: absolute;
-  display: block;
-}
-
-.gift-box {
-  bottom: 24px;
-  left: 34px;
-  width: 162px;
-  height: 120px;
-  border-radius: 5px 5px 13px 13px;
-  background: var(--coral);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.28);
-}
-
-.gift-box::before {
+.gift-button::after {
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(135deg, transparent 0 16px, rgba(255, 255, 255, 0.06) 16px 17px);
+  background: linear-gradient(180deg, transparent 52%, rgba(44, 24, 7, 0.34));
   content: "";
+  pointer-events: none;
 }
 
-.gift-lid {
-  z-index: 2;
-  bottom: 138px;
-  left: 23px;
-  width: 184px;
-  height: 38px;
-  border-radius: 8px;
-  background: #ff8a65;
-  box-shadow: 0 9px 0 rgba(9, 34, 41, 0.12);
-  transition: transform 300ms ease;
+.gift-button:hover {
+  box-shadow: 0 36px 90px rgba(0, 0, 0, 0.52), 0 0 0 8px rgba(255, 255, 255, 0.06);
+  transform: translateY(-7px) rotate(-1deg);
 }
 
-.gift-lid::before,
-.gift-lid::after {
-  position: absolute;
-  bottom: 30px;
-  width: 48px;
-  height: 31px;
-  border: 10px solid var(--gold);
-  content: "";
-}
-
-.gift-lid::before {
-  left: 50px;
-  border-radius: 50% 50% 0 50%;
-  transform: rotate(23deg);
-}
-
-.gift-lid::after {
-  right: 50px;
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(-23deg);
-}
-
-.gift-ribbon {
-  z-index: 3;
-  bottom: 24px;
-  left: 99px;
-  width: 32px;
-  height: 152px;
-  background: var(--gold);
-}
-
-.gift-tag {
+.gift-action-badge {
   position: absolute;
   z-index: 4;
   right: 14px;
-  bottom: 54px;
-  padding: 8px 13px;
-  background: var(--cream);
-  color: var(--ink);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  font-size: 13px;
+  bottom: 14px;
+  padding: 9px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 999px;
+  background: rgba(2, 8, 23, 0.62);
+  color: white;
+  font-size: 11px;
   font-weight: 800;
-  transform: rotate(-7deg);
+  letter-spacing: 0.08em;
+  backdrop-filter: blur(12px);
 }
 
 .microcopy {
@@ -1110,9 +1070,8 @@ footer {
   }
 
   .welcome-gift .gift-button {
+    width: min(72vw, 270px);
     margin: 0 0 2px;
-    transform: scale(0.82);
-    transform-origin: center;
   }
 
   .welcome-gift .microcopy {

@@ -7,6 +7,9 @@ const basePath =
   isGitHubPages && repositoryName && !isUserSite ? `/${repositoryName}` : "";
 
 const nextConfig: NextConfig = {
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
   output: isGitHubPages ? "export" : undefined,
   basePath,
   assetPrefix: basePath,
