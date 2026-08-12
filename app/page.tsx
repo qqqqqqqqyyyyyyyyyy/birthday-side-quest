@@ -10,7 +10,7 @@ const ArCakeExperience = dynamic(
 );
 
 const birthday = {
-  recipient: "寿星同学",
+  recipient: "小王",
   sender: "你的朋友",
   intro: "今天有一份限时副本，只为你开放。",
   memories: [
@@ -202,26 +202,31 @@ export default function Home() {
 
       {stage === "welcome" && (
         <section className="scene welcome-scene" aria-labelledby="welcome-title">
-          <div className="eyebrow">仅限今日 · 单人副本</div>
-          <h1 id="welcome-title">
-            嘿，<em>{birthday.recipient}</em>
-            <br />
-            有个任务等你领取
-          </h1>
-          <p className="scene-copy">{birthday.intro}</p>
+          <div className="welcome-copy">
+            <div className="eyebrow">仅限今日 · 单人副本</div>
+            <h1 id="welcome-title">
+              <span>嘿，<em>{birthday.recipient}</em></span>
+              <span>
+                有个任务<span className="mobile-title-break"><br /></span>等你领取
+              </span>
+            </h1>
+            <p className="scene-copy">{birthday.intro}</p>
+          </div>
 
-          <button
-            className="gift-button"
-            type="button"
-            onClick={() => goTo("memories")}
-            aria-label="拆开生日礼物"
-          >
-            <span className="gift-lid" />
-            <span className="gift-box" />
-            <span className="gift-ribbon" />
-            <span className="gift-tag">拆开它</span>
-          </button>
-          <p className="microcopy">建议打开声音 · 全程约 2 分钟</p>
+          <div className="welcome-gift">
+            <button
+              className="gift-button"
+              type="button"
+              onClick={() => goTo("memories")}
+              aria-label="拆开生日礼物"
+            >
+              <span className="gift-lid" />
+              <span className="gift-box" />
+              <span className="gift-ribbon" />
+              <span className="gift-tag">拆开它</span>
+            </button>
+            <p className="microcopy">轻触礼物开始 · 全程约 2 分钟</p>
+          </div>
         </section>
       )}
 

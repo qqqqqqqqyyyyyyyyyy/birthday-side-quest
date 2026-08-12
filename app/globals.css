@@ -426,6 +426,36 @@ h2 {
   line-height: 1.8;
 }
 
+.welcome-scene {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  align-items: center;
+  gap: clamp(48px, 8vw, 110px);
+}
+
+.welcome-copy {
+  min-width: 0;
+}
+
+.welcome-copy h1 span {
+  display: block;
+}
+
+.mobile-title-break {
+  display: inline !important;
+}
+
+.mobile-title-break br {
+  display: none;
+}
+
+.welcome-gift {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .gift-button {
   position: relative;
   width: 230px;
@@ -1033,6 +1063,61 @@ footer {
   .scene {
     min-height: calc(100svh - 160px);
     padding-top: 48px;
+  }
+
+  .welcome-scene {
+    display: flex;
+    min-height: auto;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 22px;
+    padding: 38px 0 42px;
+  }
+
+  .welcome-copy {
+    width: 100%;
+  }
+
+  .welcome-copy .eyebrow {
+    margin-bottom: 13px;
+    font-size: 10px;
+  }
+
+  .welcome-copy h1 {
+    max-width: none;
+    margin-bottom: 16px;
+    font-size: clamp(46px, 14vw, 58px);
+    letter-spacing: -0.065em;
+    line-height: 1.02;
+  }
+
+  .welcome-copy h1 > span + span {
+    margin-top: 7px;
+  }
+
+  .mobile-title-break br {
+    display: block;
+  }
+
+  .welcome-copy .scene-copy {
+    margin-bottom: 0;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .welcome-gift {
+    align-self: center;
+  }
+
+  .welcome-gift .gift-button {
+    margin: 0 0 2px;
+    transform: scale(0.82);
+    transform-origin: center;
+  }
+
+  .welcome-gift .microcopy {
+    margin-top: -16px;
+    text-align: center;
   }
 
   h1 {
