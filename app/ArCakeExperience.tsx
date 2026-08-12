@@ -34,75 +34,217 @@ function buildCake() {
   const flames: THREE.Object3D[] = [];
   const flameLights: THREE.PointLight[] = [];
 
+  const goldMaterial = new THREE.MeshPhysicalMaterial({
+    color: 0xd6a84a,
+    metalness: 0.72,
+    roughness: 0.24,
+    clearcoat: 0.7,
+  });
+  const chocolateMaterial = new THREE.MeshPhysicalMaterial({
+    color: 0x4a1f19,
+    roughness: 0.46,
+    clearcoat: 0.22,
+  });
+  const ganacheMaterial = new THREE.MeshPhysicalMaterial({
+    color: 0x24100e,
+    roughness: 0.16,
+    clearcoat: 1,
+    clearcoatRoughness: 0.12,
+  });
+
   const plate = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.85, 1.95, 0.12, 48),
-    new THREE.MeshStandardMaterial({ color: 0x72d6c9, roughness: 0.45 }),
+    new THREE.CylinderGeometry(1.68, 1.76, 0.1, 64),
+    goldMaterial,
   );
-  plate.position.y = 0.06;
+  plate.position.y = 0.05;
   plate.receiveShadow = true;
   cake.add(plate);
 
-  const lower = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.45, 1.48, 0.78, 48),
-    new THREE.MeshStandardMaterial({ color: 0xc96750, roughness: 0.68 }),
+  const plateTop = new THREE.Mesh(
+    new THREE.CylinderGeometry(1.56, 1.62, 0.035, 64),
+    new THREE.MeshPhysicalMaterial({
+      color: 0xf2d78e,
+      metalness: 0.58,
+      roughness: 0.28,
+    }),
   );
-  lower.position.y = 0.5;
-  lower.castShadow = true;
-  cake.add(lower);
+  plateTop.position.y = 0.115;
+  cake.add(plateTop);
 
-  const creamBand = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.47, 1.47, 0.16, 48),
-    new THREE.MeshStandardMaterial({ color: 0xffd166, roughness: 0.5 }),
+  const body = new THREE.Mesh(
+    new THREE.CylinderGeometry(1.27, 1.34, 1.05, 64),
+    chocolateMaterial,
   );
-  creamBand.position.y = 0.86;
-  cake.add(creamBand);
+  body.position.y = 0.67;
+  body.castShadow = true;
+  cake.add(body);
 
-  const upper = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.34, 1.43, 0.72, 48),
-    new THREE.MeshStandardMaterial({ color: 0xdd8667, roughness: 0.64 }),
+  const crumbRing = new THREE.Mesh(
+    new THREE.TorusGeometry(1.25, 0.09, 12, 64),
+    new THREE.MeshStandardMaterial({ color: 0x2a1410, roughness: 0.92 }),
   );
-  upper.position.y = 1.25;
-  upper.castShadow = true;
-  cake.add(upper);
+  crumbRing.rotation.x = Math.PI / 2;
+  crumbRing.position.y = 0.2;
+  cake.add(crumbRing);
 
-  const frosting = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.38, 1.34, 0.22, 48),
-    new THREE.MeshStandardMaterial({ color: 0xf5eee2, roughness: 0.54 }),
+  const ganache = new THREE.Mesh(
+    new THREE.CylinderGeometry(1.32, 1.28, 0.18, 64),
+    ganacheMaterial,
   );
-  frosting.position.y = 1.7;
-  frosting.castShadow = true;
-  cake.add(frosting);
+  ganache.position.y = 1.25;
+  ganache.castShadow = true;
+  cake.add(ganache);
 
-  [-0.78, 0, 0.78].forEach((x, index) => {
-    const candle = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.085, 0.085, 0.68, 20),
-      new THREE.MeshStandardMaterial({
-        color: index === 1 ? 0xffd166 : 0xff7b54,
-        roughness: 0.42,
-      }),
+  [
+    [0, 0.36],
+    [0.48, 0.24],
+    [-0.55, 0.42],
+    [1.02, 0.28],
+    [-1.08, 0.2],
+    [2.72, 0.3],
+  ].forEach(([angle, length]) => {
+    const drip = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.08, 0.11, length, 18),
+      ganacheMaterial,
     );
-    candle.position.set(x, 2.09, 0);
+    drip.position.set(
+      Math.sin(angle) * 1.285,
+      1.18 - length / 2,
+      Math.cos(angle) * 1.285,
+    );
+    drip.castShadow = true;
+    cake.add(drip);
+
+    const drop = new THREE.Mesh(
+      new THREE.SphereGeometry(0.105, 18, 12),
+      ganacheMaterial,
+    );
+    drop.scale.y = 1.18;
+    drop.position.set(drip.position.x, 1.17 - length, drip.position.z);
+    cake.add(drop);
+  });
+
+  const blueberryGeometry = new THREE.SphereGeometry(0.18, 22, 16);
+  const blueberryMaterial = new THREE.MeshPhysicalMaterial({
+    color: 0x17243f,
+    roughness: 0.36,
+    clearcoat: 0.32,
+  });
+  [
+    [-0.63, 1.45, 0.22],
+    [-0.32, 1.5, 0.47],
+    [0.55, 1.47, 0.3],
+  ].forEach(([x, y, z]) => {
+    const berry = new THREE.Mesh(blueberryGeometry, blueberryMaterial);
+    berry.position.set(x, y, z);
+    berry.castShadow = true;
+    cake.add(berry);
+  });
+
+  const raspberryGeometry = new THREE.IcosahedronGeometry(0.23, 2);
+  const raspberryMaterial = new THREE.MeshPhysicalMaterial({
+    color: 0xb70f32,
+    roughness: 0.5,
+    clearcoat: 0.18,
+  });
+  [
+    [-0.1, 1.53, 0.28],
+    [0.28, 1.51, 0.5],
+  ].forEach(([x, y, z]) => {
+    const berry = new THREE.Mesh(raspberryGeometry, raspberryMaterial);
+    berry.position.set(x, y, z);
+    berry.rotation.set(0.2, 0.4, -0.15);
+    berry.castShadow = true;
+    cake.add(berry);
+  });
+
+  const mintMaterial = new THREE.MeshPhysicalMaterial({
+    color: 0x3d7c45,
+    roughness: 0.62,
+    side: THREE.DoubleSide,
+  });
+  [
+    [0.08, 1.56, 0.02, -0.7],
+    [0.34, 1.57, 0.04, 0.48],
+  ].forEach(([x, y, z, rotation]) => {
+    const leaf = new THREE.Mesh(
+      new THREE.SphereGeometry(0.28, 18, 10),
+      mintMaterial,
+    );
+    leaf.scale.set(0.7, 0.08, 1.35);
+    leaf.rotation.set(0.14, rotation, -0.18);
+    leaf.position.set(x, y, z);
+    cake.add(leaf);
+  });
+
+  const goldShard = new THREE.Mesh(
+    new THREE.ConeGeometry(0.31, 0.62, 3),
+    goldMaterial,
+  );
+  goldShard.position.set(0.72, 1.53, 0.05);
+  goldShard.rotation.set(0.12, -0.42, -0.3);
+  cake.add(goldShard);
+
+  [
+    [-0.76, -0.42],
+    [-0.25, -0.54],
+    [0.25, -0.54],
+    [0.76, -0.42],
+  ].forEach(([x, z], index) => {
+    const candleMaterial = new THREE.MeshPhysicalMaterial({
+      color: index % 2 === 0 ? 0xf5eee2 : 0xe8c36a,
+      roughness: 0.38,
+      clearcoat: 0.2,
+    });
+    const candle = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.055, 0.06, 0.58, 20),
+      candleMaterial,
+    );
+    candle.position.set(x, 1.63, z);
     candle.castShadow = true;
     cake.add(candle);
 
-    const flameMaterial = new THREE.MeshStandardMaterial({
-      color: 0xffd166,
-      emissive: 0xff7b00,
-      emissiveIntensity: 2.4,
+    [1.47, 1.65, 1.81].forEach((y) => {
+      const stripe = new THREE.Mesh(
+        new THREE.TorusGeometry(0.061, 0.012, 8, 18),
+        new THREE.MeshStandardMaterial({
+          color: index % 2 === 0 ? 0xd6a84a : 0xf5eee2,
+          metalness: index % 2 === 0 ? 0.55 : 0,
+          roughness: 0.35,
+        }),
+      );
+      stripe.rotation.x = Math.PI / 2;
+      stripe.position.set(x, y, z);
+      cake.add(stripe);
+    });
+
+    const wick = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.012, 0.012, 0.09, 8),
+      new THREE.MeshStandardMaterial({ color: 0x261714, roughness: 1 }),
+    );
+    wick.position.set(x, 1.965, z);
+    cake.add(wick);
+
+    const flameMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0xffe5a3,
+      emissive: 0xff6a00,
+      emissiveIntensity: 3.2,
       roughness: 0.25,
+      transparent: true,
+      opacity: 0.96,
     });
     const flame = new THREE.Mesh(
-      new THREE.SphereGeometry(0.13, 20, 16),
+      new THREE.SphereGeometry(0.095, 20, 16),
       flameMaterial,
     );
-    flame.scale.set(0.72, 1.45, 0.72);
-    flame.position.set(x, 2.55, 0);
+    flame.scale.set(0.66, 1.55, 0.66);
+    flame.position.set(x, 2.08, z);
     flame.visible = false;
     cake.add(flame);
     flames.push(flame);
 
-    const flameLight = new THREE.PointLight(0xffb347, 0, 2.2, 2);
-    flameLight.position.set(x, 2.52, 0.15);
+    const flameLight = new THREE.PointLight(0xffa13b, 0, 1.9, 2);
+    flameLight.position.set(x, 2.05, z + 0.08);
     cake.add(flameLight);
     flameLights.push(flameLight);
   });
