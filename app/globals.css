@@ -579,6 +579,10 @@ h2 {
   aspect-ratio: 1 / 1;
 }
 
+.landscape-photo-card .memory-photo-window {
+  aspect-ratio: 4 / 3;
+}
+
 .memory-photo-track {
   display: flex;
   width: 200%;
@@ -1215,6 +1219,10 @@ footer {
 
   .square-photo-card .memory-photo-window {
     aspect-ratio: 1 / 1;
+  }
+
+  .landscape-photo-card .memory-photo-window {
+    aspect-ratio: 4 / 3;
   }
 
   .memory-card .grand-memory-title {

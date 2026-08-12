@@ -48,10 +48,19 @@ const birthday = {
     },
     {
       label: "记忆碎片 03",
-      title: "那些深夜聊天",
-      note: "写下一件你一直记得、却可能从没说过的小事。",
+      title: "幸福 ing",
+      note: "",
       color: "gold",
-      photos: [],
+      photos: [
+        {
+          src: "/memory-card-03-photo-01.jpg",
+          alt: "两位女孩在湖边合照的插画",
+        },
+        {
+          src: "/memory-card-03-photo-02.jpg",
+          alt: "两位女孩在湖边的合照",
+        },
+      ],
     },
     {
       label: "记忆碎片 04",
@@ -307,7 +316,7 @@ export default function Home() {
               return (
                 <article
                   key={memory.label}
-                  className={`memory-card ${memory.color} ${index === 1 ? "square-photo-card" : ""} ${isRevealed ? "revealed" : ""}`}
+                  className={`memory-card ${memory.color} ${index === 1 ? "square-photo-card" : ""} ${index === 2 ? "landscape-photo-card" : ""} ${isRevealed ? "revealed" : ""}`}
                   style={{ "--tilt": `${index % 2 === 0 ? -2.5 : 2.5}deg` } as CSSProperties}
                 >
                   <div
@@ -368,10 +377,10 @@ export default function Home() {
 
                   <div className="memory-card-copy">
                     <span className="memory-label">{memory.label}</span>
-                    <strong className={index < 2 ? "grand-memory-title" : undefined}>
+                    <strong className={index < 3 ? "grand-memory-title" : undefined}>
                       {memory.title}
                     </strong>
-                    {index > 1 && (
+                    {index > 2 && (
                       <small>{isRevealed ? memory.note : "点亮后解锁这段故事"}</small>
                     )}
                     <button
