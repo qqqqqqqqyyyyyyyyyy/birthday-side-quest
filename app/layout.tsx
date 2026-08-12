@@ -1,5 +1,23 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
+
+const lxgwWenKai = localFont({
+  src: [
+    {
+      path: "./fonts/lxgw-wenkai-gb-regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/lxgw-wenkai-gb-medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+  ],
+  display: "swap",
+  fallback: ["STKaiti", "KaiTi", "PingFang SC", "sans-serif"],
+});
 
 function getSiteBaseUrl() {
   if (process.env.NEXT_PUBLIC_SITE_URL) {
@@ -46,7 +64,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN">
-      <body>{children}</body>
+      <body className={lxgwWenKai.className}>{children}</body>
     </html>
   );
 }

@@ -24,7 +24,6 @@ body {
   margin: 0;
   background: var(--night-deep);
   color: var(--cream);
-  font-family: "Avenir Next", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
 button {
@@ -250,7 +249,6 @@ footer {
 
 .ar-guide strong {
   display: block;
-  font-family: "Songti SC", serif;
   font-size: clamp(21px, 6vw, 31px);
   line-height: 1.25;
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.65);
@@ -409,7 +407,6 @@ p {
 h1 {
   max-width: 800px;
   margin-bottom: 22px;
-  font-family: "Songti SC", "STSong", serif;
   font-size: clamp(48px, 8vw, 96px);
   font-weight: 700;
   letter-spacing: -0.055em;
@@ -423,7 +420,6 @@ h1 em {
 
 h2 {
   margin-bottom: 16px;
-  font-family: "Songti SC", "STSong", serif;
   font-size: clamp(38px, 5vw, 64px);
   letter-spacing: -0.04em;
   line-height: 1.08;
@@ -536,7 +532,6 @@ h2 {
 .counter {
   padding-bottom: 7px;
   color: var(--gold);
-  font-family: "Songti SC", serif;
   font-size: 34px;
 }
 
@@ -585,7 +580,6 @@ h2 {
     repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.11) 0 9px, transparent 9px 18px),
     #b6c7c2;
   color: rgba(23, 51, 58, 0.48);
-  font-family: "Songti SC", serif;
   font-size: 30px;
   transition: background 400ms ease;
 }
@@ -615,7 +609,6 @@ h2 {
 .memory-card strong {
   display: block;
   margin-bottom: 8px;
-  font-family: "Songti SC", serif;
   font-size: 23px;
 }
 
@@ -905,7 +898,6 @@ h2 {
   position: relative;
   z-index: 1;
   margin-bottom: 18px;
-  font-family: "Songti SC", serif;
   font-size: 16px;
   line-height: 2;
 }
@@ -940,7 +932,6 @@ h2 {
 }
 
 .signature strong {
-  font-family: "Songti SC", serif;
   font-size: 25px;
 }
 
@@ -970,7 +961,6 @@ h2 {
 
 .final-actions p {
   color: rgba(245, 238, 226, 0.58);
-  font-family: "Songti SC", serif;
   font-size: 14px;
 }
 
