@@ -575,6 +575,10 @@ h2 {
   user-select: none;
 }
 
+.square-photo-card .memory-photo-window {
+  aspect-ratio: 1 / 1;
+}
+
 .memory-photo-track {
   display: flex;
   width: 200%;
@@ -1207,6 +1211,10 @@ footer {
 
   .memory-photo-window {
     aspect-ratio: 4 / 5;
+  }
+
+  .square-photo-card .memory-photo-window {
+    aspect-ratio: 1 / 1;
   }
 
   .memory-card .grand-memory-title {
