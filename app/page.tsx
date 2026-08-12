@@ -16,27 +16,40 @@ const birthday = {
   memories: [
     {
       label: "记忆碎片 01",
-      title: "第一次认识你",
-      note: "把这里换成你们初识时，只有彼此才懂的那句话。",
+      title: "绝世美女",
+      note: "",
       color: "coral",
+      photos: [
+        {
+          src: "/memory-card-01-photo-01.jpg",
+          alt: "古风粉色汉服人物插画",
+        },
+        {
+          src: "/memory-card-01-photo-02.jpg",
+          alt: "身着粉色古装的女孩",
+        },
+      ],
     },
     {
       label: "记忆碎片 02",
       title: "最离谱的一张合照",
       note: "换上一张照片，再补一句当时发生了什么。",
       color: "blue",
+      photos: [],
     },
     {
       label: "记忆碎片 03",
       title: "那些深夜聊天",
       note: "写下一件你一直记得、却可能从没说过的小事。",
       color: "gold",
+      photos: [],
     },
     {
       label: "记忆碎片 04",
       title: "下一站，继续同行",
       note: "留给你们下一次出发，以及未来还会发生的好故事。",
       color: "mint",
+      photos: [],
     },
   ],
   letter: [
@@ -303,15 +316,28 @@ export default function Home() {
                       className="memory-photo-track"
                       style={{ transform: `translateX(-${photoPages[index] * 50}%)` }}
                     >
-                      {[0, 1].map((photoIndex) => (
-                        <div
-                          className="photo-placeholder"
-                          key={photoIndex}
-                          aria-label={`${memory.label}，照片 ${photoIndex + 1}`}
-                        >
-                          <span>照片 {photoIndex + 1} 待放入</span>
-                        </div>
-                      ))}
+                      {[0, 1].map((photoIndex) => {
+                        const photo = memory.photos[photoIndex];
+                        return photo ? (
+                          // Images are already compressed and served as static GitHub Pages assets.
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            className="memory-photo"
+                            key={photo.src}
+                            src={`${publicAssetPath}${photo.src}`}
+                            alt={photo.alt}
+                            draggable={false}
+                          />
+                        ) : (
+                          <div
+                            className="photo-placeholder"
+                            key={photoIndex}
+                            aria-label={`${memory.label}，照片 ${photoIndex + 1}`}
+                          >
+                            <span>照片 {photoIndex + 1} 待放入</span>
+                          </div>
+                        );
+                      })}
                     </div>
                     <span className="swipe-hint" aria-hidden="true">
                       {photoPages[index] === 0 ? "左滑看下一张 ←" : "→ 右滑看上一张"}
@@ -333,8 +359,12 @@ export default function Home() {
 
                   <div className="memory-card-copy">
                     <span className="memory-label">{memory.label}</span>
-                    <strong>{memory.title}</strong>
-                    <small>{isRevealed ? memory.note : "点亮后解锁这段故事"}</small>
+                    <strong className={index === 0 ? "grand-memory-title" : undefined}>
+                      {memory.title}
+                    </strong>
+                    {index !== 0 && (
+                      <small>{isRevealed ? memory.note : "点亮后解锁这段故事"}</small>
+                    )}
                     <button
                       type="button"
                       className="memory-reveal-button"
