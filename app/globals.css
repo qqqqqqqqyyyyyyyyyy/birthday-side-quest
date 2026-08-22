@@ -1023,6 +1023,51 @@ h2 {
   padding-top: 70px;
 }
 
+.video-scene {
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.video-scene .scene-copy {
+  margin-bottom: 28px;
+}
+
+.birthday-video-frame {
+  position: relative;
+  width: min(760px, 100%);
+  overflow: hidden;
+  padding: 8px;
+  border: 1px solid rgba(255, 209, 102, 0.32);
+  border-radius: 24px;
+  background: rgba(2, 8, 23, 0.72);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+}
+
+.birthday-video-frame::before {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  box-shadow: inset 0 0 28px rgba(114, 214, 201, 0.08);
+  content: "";
+  pointer-events: none;
+}
+
+.birthday-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 17px;
+  background: #000;
+  object-fit: contain;
+}
+
+.video-continue {
+  margin-top: 30px;
+}
+
 .letter-paper {
   position: relative;
   width: min(680px, 100%);

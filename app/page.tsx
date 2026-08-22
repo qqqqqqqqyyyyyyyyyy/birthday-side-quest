@@ -98,9 +98,9 @@ const birthday = {
   ],
 };
 
-type Stage = "welcome" | "memories" | "cake" | "letter";
+type Stage = "welcome" | "memories" | "cake" | "video" | "letter";
 
-const stageOrder: Stage[] = ["welcome", "memories", "cake", "letter"];
+const stageOrder: Stage[] = ["welcome", "memories", "cake", "video", "letter"];
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>("welcome");
@@ -307,12 +307,12 @@ export default function Home() {
         </button>
       </header>
 
-      <div className="progress" aria-label={`进度 ${progress}/4`}>
+      <div className="progress" aria-label={`进度 ${progress}/5`}>
         <span>0{progress}</span>
         <div className="progress-track">
-          <i style={{ width: `${progress * 25}%` }} />
+          <i style={{ width: `${progress * 20}%` }} />
         </div>
-        <span>04</span>
+        <span>05</span>
       </div>
 
       {stage === "welcome" && (
@@ -454,8 +454,30 @@ export default function Home() {
           micStatus={micStatus}
           onStartMicrophone={startMicrophone}
           onExtinguish={extinguishCandles}
-          onContinue={() => goTo("letter")}
+          onContinue={() => goTo("video")}
         />
+      )}
+
+      {stage === "video" && (
+        <section className="scene video-scene" aria-labelledby="video-title">
+          <div className="eyebrow">任务 03 · 特别放映</div>
+          <h2 id="video-title">还有一段画面，想给你看</h2>
+          <p className="scene-copy">戴上耳机，按下播放。</p>
+          <div className="birthday-video-frame">
+            <video
+              className="birthday-video"
+              controls
+              playsInline
+              preload="metadata"
+              src={`${publicAssetPath}/birthday-video.mp4`}
+            >
+              你的浏览器暂不支持播放这段视频。
+            </video>
+          </div>
+          <button className="primary-button video-continue" type="button" onClick={() => goTo("letter")}>
+            看完了，领取最后一份礼物 <span>→</span>
+          </button>
+        </section>
       )}
 
       {stage === "letter" && (
