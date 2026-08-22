@@ -138,6 +138,35 @@ footer {
   padding-top: 28px;
 }
 
+.topbar-start {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 16px;
+}
+
+.page-back-button {
+  display: flex;
+  min-height: 38px;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(2, 8, 23, 0.48);
+  color: var(--cream);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
+}
+
+.page-back-button span {
+  font-size: 17px;
+  line-height: 1;
+}
+
 .brand {
   display: flex;
   align-items: center;
@@ -202,19 +231,26 @@ footer {
 .ar-close {
   position: fixed;
   top: max(20px, env(safe-area-inset-top));
-  right: 18px;
+  left: 18px;
   z-index: 12;
   display: none;
-  width: 42px;
-  height: 42px;
+  min-height: 42px;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
   border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: 50%;
+  border-radius: 999px;
   background: rgba(7, 25, 30, 0.52);
   color: white;
   cursor: pointer;
-  font-size: 26px;
+  font-size: 13px;
+  font-weight: 700;
   line-height: 1;
   backdrop-filter: blur(12px);
+}
+
+.ar-close span {
+  font-size: 19px;
 }
 
 .ar-close.visible {
@@ -236,6 +272,11 @@ footer {
 .ar-guide {
   max-width: calc(100% - 60px);
   color: white;
+}
+
+.ar-experience.ar-active .ar-guide {
+  max-width: 100%;
+  padding-top: 55px;
 }
 
 .ar-guide span {
@@ -1163,8 +1204,18 @@ footer {
   }
 
   .brand {
-    max-width: 190px;
+    max-width: 150px;
     font-size: 9px;
+  }
+
+  .topbar-start {
+    gap: 8px;
+  }
+
+  .page-back-button {
+    min-height: 34px;
+    padding: 6px 10px;
+    font-size: 11px;
   }
 
   .scene {

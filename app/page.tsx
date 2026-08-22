@@ -157,6 +157,18 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  function goBack() {
+    const currentIndex = stageOrder.indexOf(stage);
+    if (currentIndex <= 0) return;
+
+    if (stage === "cake") stopMicrophone();
+    if (stage === "video") {
+      setCandlesOut(false);
+      setMicStatus("idle");
+    }
+    goTo(stageOrder[currentIndex - 1]);
+  }
+
   function revealMemory(index: number) {
     if (revealed.includes(index)) return;
     playChime([440 + index * 70]);
@@ -287,9 +299,16 @@ export default function Home() {
       </div>
 
       <header className="topbar">
-        <div className="brand">
-          <span className="brand-dot" />
-          BIRTHDAY SIDE QUEST
+        <div className="topbar-start">
+          {stage !== "welcome" && (
+            <button className="page-back-button" type="button" onClick={goBack}>
+              <span aria-hidden="true">←</span> 返回
+            </button>
+          )}
+          <div className="brand">
+            <span className="brand-dot" />
+            BIRTHDAY SIDE QUEST
+          </div>
         </div>
         <button
           className="sound-toggle"
@@ -448,6 +467,7 @@ export default function Home() {
           micStatus={micStatus}
           onStartMicrophone={startMicrophone}
           onExtinguish={extinguishCandles}
+          onBack={goBack}
           onContinue={() => goTo("video")}
         />
       )}

@@ -26,6 +26,7 @@ type Props = {
   micStatus: MicStatus;
   onStartMicrophone: () => Promise<void>;
   onExtinguish: () => void;
+  onBack: () => void;
   onContinue: () => void;
 };
 
@@ -287,6 +288,7 @@ export function ArCakeExperience({
   micStatus,
   onStartMicrophone,
   onExtinguish,
+  onBack,
   onContinue,
 }: Props) {
   const [localPhase, setPhase] = useState<ArPhase>("intro");
@@ -353,13 +355,9 @@ export function ArCakeExperience({
     if (videoRef.current) videoRef.current.srcObject = null;
   }
 
-  function resetExperience() {
+  function leaveArPage() {
     releaseRuntime();
-    setMode(null);
-    setPhase("intro");
-    setSurfaceFound(false);
-    surfaceFoundRef.current = false;
-    setCameraError(false);
+    onBack();
   }
 
   async function startExperience() {
@@ -573,10 +571,10 @@ export function ArCakeExperience({
       <button
         className={`ar-close ${active ? "visible" : ""}`}
         type="button"
-        onClick={resetExperience}
-        aria-label="退出 AR"
+        onClick={leaveArPage}
+        aria-label="返回上一页"
       >
-        ×
+        <span aria-hidden="true">←</span> 返回
       </button>
 
       {!active ? (
