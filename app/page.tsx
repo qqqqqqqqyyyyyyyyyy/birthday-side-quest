@@ -23,7 +23,6 @@ const ArCakeExperience = dynamic(
 
 const birthday = {
   recipient: "小王",
-  sender: "你的朋友",
   intro: "今天有一份限时副本，只为你开放。",
   memories: [
     {
@@ -90,11 +89,6 @@ const birthday = {
         },
       ],
     },
-  ],
-  letter: [
-    "又顺利完成了一次绕太阳旅行，恭喜。",
-    "谢谢你把很多普通日子，变成了值得记住的片段。愿新的一岁，好奇心不掉线，快乐有回声，偶尔犯傻也总有人一起。",
-    "这是一个还在等真实回忆填满的小宇宙——等照片和故事到位，它才算真正属于你。",
   ],
 };
 
@@ -481,21 +475,27 @@ export default function Home() {
       )}
 
       {stage === "letter" && (
-        <section className="scene letter-scene" aria-labelledby="letter-title">
+        <section className="scene letter-scene" aria-label="写给小王的手写生日信">
           <div className="eyebrow">任务完成 · 最终奖励</div>
           <div className="letter-paper">
             <div className="paper-tape" aria-hidden="true" />
-            <span className="letter-date">TODAY · 23:59</span>
-            <h2 id="letter-title">生日快乐，{birthday.recipient}</h2>
-            {birthday.letter.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-            <div className="signature">
-              <span>一直站你这边的</span>
-              <strong>{birthday.sender}</strong>
-            </div>
-            <span className="letter-stamp">HBD</span>
+            <a
+              className="handwritten-letter-link"
+              href={`${publicAssetPath}/handwritten-birthday-letter.jpg`}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="打开大图查看手写生日信"
+            >
+              {/* Preserve the original handwriting as a scan instead of recreating it with a font. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="handwritten-letter-image"
+                src={`${publicAssetPath}/handwritten-birthday-letter.jpg`}
+                alt="写给小王的手写生日信"
+              />
+            </a>
           </div>
+          <p className="letter-zoom-hint">轻触手写信可放大查看</p>
           <div className="final-actions">
             <button
               className="secondary-button light"
