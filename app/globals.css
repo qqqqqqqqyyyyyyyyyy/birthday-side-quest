@@ -306,15 +306,59 @@ footer {
   gap: 13px;
 }
 
-.ar-text-button {
-  padding: 8px 14px;
-  border: 0;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.82);
+.ar-manual-button {
+  min-height: 42px;
+  padding: 9px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 999px;
+  background: rgba(7, 25, 30, 0.72);
+  color: white;
   cursor: pointer;
-  font-size: 12px;
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
+}
+
+.ar-loading {
+  display: grid;
+  min-height: calc(100svh - 190px);
+  align-content: center;
+  justify-items: center;
+  padding: 42px 24px;
+  text-align: center;
+}
+
+.ar-loading h2 {
+  margin: 12px 0 8px;
+  font-size: clamp(30px, 9vw, 52px);
+}
+
+.ar-loading p {
+  max-width: 320px;
+  margin: 0;
+  color: rgba(245, 238, 226, 0.72);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.ar-loading-orbit {
+  display: grid;
+  width: 92px;
+  height: 92px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(114, 214, 201, 0.48);
+  border-radius: 50%;
+  color: var(--gold);
+  font-size: 30px;
+  place-items: center;
+  animation: ar-loading-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes ar-loading-pulse {
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 36px rgba(114, 214, 201, 0.28);
+  }
 }
 
 .ar-warning {

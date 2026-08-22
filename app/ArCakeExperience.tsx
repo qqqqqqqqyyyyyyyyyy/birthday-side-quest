@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
-type MicStatus = "idle" | "listening" | "denied";
+type MicStatus = "idle" | "listening" | "denied" | "timeout";
 type ArMode = "webxr" | "camera" | "preview" | null;
 type ArPhase = "intro" | "scanning" | "placed" | "lit" | "out";
 
@@ -657,14 +657,25 @@ export function ArCakeExperience({
                 <button
                   className="ar-action-button warm"
                   type="button"
-                  onClick={onStartMicrophone}
-                  disabled={micStatus === "listening"}
+                  onClick={micStatus === "listening" ? onExtinguish : onStartMicrophone}
                 >
                   <span className="action-icon">◉</span>
-                  {micStatus === "listening" ? "正在听你吹气…" : "开启麦克风吹气"}
+                  {micStatus === "listening"
+                    ? "正在听你吹气… 点击也能吹灭"
+                    : micStatus === "timeout"
+                      ? "再试一次吹气"
+                      : micStatus === "denied"
+                        ? "再试一次麦克风"
+                        : "开启麦克风吹气"}
                 </button>
-                <button className="ar-text-button" type="button" onClick={onExtinguish}>
-                  麦克风不可用？轻触吹灭
+                <button className="ar-manual-button" type="button" onClick={onExtinguish}>
+                  {micStatus === "listening"
+                    ? "没反应？点这里直接吹灭"
+                    : micStatus === "timeout"
+                      ? "没有检测到？直接吹灭蜡烛"
+                      : micStatus === "denied"
+                        ? "麦克风不可用，直接吹灭蜡烛"
+                        : "不方便吹气？点这里吹灭"}
                 </button>
               </div>
             )}

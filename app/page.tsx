@@ -6,7 +6,19 @@ import dynamic from "next/dynamic";
 const ArCakeExperience = dynamic(
   () =>
     import("./ArCakeExperience").then((module) => module.ArCakeExperience),
-  { ssr: false },
+  {
+    ssr: false,
+    loading: () => (
+      <section className="scene ar-loading" aria-live="polite">
+        <div className="ar-loading-orbit" aria-hidden="true">
+          <span>✦</span>
+        </div>
+        <div className="eyebrow">正在准备生日现场</div>
+        <h2>蛋糕马上送达…</h2>
+        <p>第一次打开可能需要几秒，请不要退出页面。</p>
+      </section>
+    ),
+  },
 );
 
 const birthday = {
@@ -99,17 +111,19 @@ export default function Home() {
   const [soundOn, setSoundOn] = useState(true);
   const [candlesOut, setCandlesOut] = useState(false);
   const [micStatus, setMicStatus] = useState<
-    "idle" | "listening" | "denied"
+    "idle" | "listening" | "denied" | "timeout"
   >("idle");
   const audioContextRef = useRef<AudioContext | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const animationRef = useRef<number | null>(null);
+  const micTimeoutRef = useRef<number | null>(null);
   const swipeStartRef = useRef<{ cardIndex: number; x: number } | null>(null);
 
   const progress = stageOrder.indexOf(stage) + 1;
   const publicAssetPath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
   useEffect(() => {
+    void import("./ArCakeExperience");
     return () => stopMicrophone();
   }, []);
 
@@ -176,6 +190,10 @@ export default function Home() {
   }
 
   function stopMicrophone() {
+    if (micTimeoutRef.current !== null) {
+      window.clearTimeout(micTimeoutRef.current);
+      micTimeoutRef.current = null;
+    }
     if (animationRef.current !== null) {
       cancelAnimationFrame(animationRef.current);
       animationRef.current = null;
@@ -202,15 +220,29 @@ export default function Home() {
       return;
     }
 
+    stopMicrophone();
+
     try {
+      const AudioContextClass =
+        window.AudioContext ||
+        (window as typeof window & { webkitAudioContext?: typeof AudioContext })
+          .webkitAudioContext;
+      if (!AudioContextClass) {
+        setMicStatus("denied");
+        return;
+      }
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const context = new AudioContext();
+      const context = new AudioContextClass();
+      streamRef.current = stream;
+      audioContextRef.current = context;
+      if (context.state === "suspended") await context.resume();
+
       const source = context.createMediaStreamSource(stream);
       const analyser = context.createAnalyser();
       analyser.fftSize = 256;
+      analyser.smoothingTimeConstant = 0.15;
       source.connect(analyser);
-      streamRef.current = stream;
-      audioContextRef.current = context;
       setMicStatus("listening");
 
       const samples = new Uint8Array(analyser.fftSize);
@@ -224,14 +256,18 @@ export default function Home() {
           }, 0) / samples.length,
         );
 
-        strongFrames = energy > 0.12 ? strongFrames + 1 : 0;
-        if (strongFrames > 4) {
+        strongFrames = energy > 0.055 ? strongFrames + 1 : 0;
+        if (strongFrames >= 3) {
           extinguishCandles();
           return;
         }
         animationRef.current = requestAnimationFrame(listen);
       };
       listen();
+      micTimeoutRef.current = window.setTimeout(() => {
+        stopMicrophone();
+        setMicStatus("timeout");
+      }, 7000);
     } catch {
       stopMicrophone();
       setMicStatus("denied");
